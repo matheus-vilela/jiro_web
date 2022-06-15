@@ -28,6 +28,7 @@ export const Column = styled.div`
   flex:1;
   height: 100%;
   min-height: 80vh;
+  min-width: 300px;
   padding: 20px;
   background-color: ${(props) => props.theme.colors.foreground};
 `;
