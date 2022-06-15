@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Menu: React.FC<Props> = ({ select, setSelect, dataUser }) => {
-  const { team } = useAuth();
+  const { team, user } = useAuth();
   const theme = useTheme();
   return (
     <Container>
@@ -35,23 +35,28 @@ const Menu: React.FC<Props> = ({ select, setSelect, dataUser }) => {
         <FiClock size={24} color={theme.colors.white} />
         <OptionText>Histórias</OptionText>
       </Option>
-      <SubTitle>ADMIN</SubTitle>
-      <Option onClick={() => setSelect('create-sprint')} active={select === 'create-sprint'}>
-        <FiPlus size={24} color={theme.colors.white} />
-        <OptionText>Criar sprint</OptionText>
-      </Option>
-      <Option onClick={() => setSelect('create-history')} active={select === 'create-history'}>
-        <FiPlus size={24} color={theme.colors.white} />
-        <OptionText>Criar história</OptionText>
-      </Option>
-      <Option onClick={() => setSelect('create-task')} active={select === 'create-task'}>
-        <FiPlus size={24} color={theme.colors.white} />
-        <OptionText>Adicionar task</OptionText>
-      </Option>
-      <Option onClick={() => setSelect('create-user')} active={select === 'create-user'}>
-        <FiPlus size={24} color={theme.colors.white} />
-        <OptionText>Adicionar novo membro</OptionText>
-      </Option>
+      {user.admin
+     && (
+     <>
+       <SubTitle>ADMIN</SubTitle>
+       <Option onClick={() => setSelect('create-sprint')} active={select === 'create-sprint'}>
+         <FiPlus size={24} color={theme.colors.white} />
+         <OptionText>Criar sprint</OptionText>
+       </Option>
+       <Option onClick={() => setSelect('create-history')} active={select === 'create-history'}>
+         <FiPlus size={24} color={theme.colors.white} />
+         <OptionText>Criar história</OptionText>
+       </Option>
+       <Option onClick={() => setSelect('create-task')} active={select === 'create-task'}>
+         <FiPlus size={24} color={theme.colors.white} />
+         <OptionText>Adicionar task</OptionText>
+       </Option>
+       <Option onClick={() => setSelect('create-user')} active={select === 'create-user'}>
+         <FiPlus size={24} color={theme.colors.white} />
+         <OptionText>Adicionar novo membro</OptionText>
+       </Option>
+     </>
+     )}
       <SubTitle>O TIME</SubTitle>
       {
       team.map((item) => (
