@@ -43,7 +43,6 @@ export const StoryProvider: React.FC<ContextProps> = ({ children }) => {
   async function loadStories() {
     const res = await getStories();
     if (res) {
-      console.log('Story', { res });
       setStories(res);
     }
   }
@@ -54,7 +53,6 @@ export const StoryProvider: React.FC<ContextProps> = ({ children }) => {
       sprint_id, title, status, bussinessRules, acceptanceCriteria, bdd,
     });
     if (res) {
-      console.log('Story CREATED', { res });
       loadStories();
       callback();
     }

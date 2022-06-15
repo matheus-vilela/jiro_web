@@ -27,10 +27,10 @@ const Panel: React.FC = () => {
   const [showDetail, setShowDetail] = useState<TaskProps>();
 
   useEffect(() => {
-    loadTasks();
-    loadTeam();
     loadSprints();
     loadStories();
+    loadTeam();
+    loadTasks();
   }, []);
 
   const enableDropping = (event: React.DragEvent<HTMLDivElement>) => {

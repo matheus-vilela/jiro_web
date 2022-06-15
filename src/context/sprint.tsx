@@ -37,7 +37,6 @@ export const SprintProvider: React.FC<ContextProps> = ({ children }) => {
   async function loadSprints() {
     const res = await getSprints();
     if (res) {
-      console.log('SPRINTS', { res });
       setSprints(res);
     }
   }
@@ -54,7 +53,6 @@ export const SprintProvider: React.FC<ContextProps> = ({ children }) => {
       endDate,
     });
     if (res) {
-      console.log('SPRINT CREATE', { res });
       loadSprints();
       callback();
     }

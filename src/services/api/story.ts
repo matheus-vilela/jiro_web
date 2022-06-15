@@ -21,7 +21,6 @@ interface UpdateStoryProps {
 
 export async function getStories() {
   const response = await api.get('/story');
-  console.log('STORIES', { response });
   if (response.status === 200) { return response.data; }
   return null;
 }
@@ -42,7 +41,6 @@ export async function createStory({
     acceptanceCriteria,
     bdd,
   });
-  console.log('SOTRY CREATED', { response });
 
   if (response.status === 200 || response.status === 201) { return response.data; }
   return null;

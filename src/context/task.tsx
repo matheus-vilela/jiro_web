@@ -86,7 +86,6 @@ export const TaskProvider: React.FC<ContextProps> = ({ children }) => {
     const list = await getTasks();
 
     if (list) {
-      console.log('LIST TASKS', { list });
       setTasks({
         [String('BACKLOG')]: [
 
@@ -127,8 +126,6 @@ export const TaskProvider: React.FC<ContextProps> = ({ children }) => {
     employee_cpf,
     story_id,
   }:CreateTaskProps, callback:any) {
-    console.log('aqui2');
-
     const res = await createTask({
       title,
       status,
@@ -139,7 +136,6 @@ export const TaskProvider: React.FC<ContextProps> = ({ children }) => {
       story_id,
     });
     if (res) {
-      console.log('CREATED TASK', { res });
       callback();
       loadTasks();
     }
@@ -166,7 +162,6 @@ export const TaskProvider: React.FC<ContextProps> = ({ children }) => {
       story_id,
     });
     if (res) {
-      console.log('CREATED TASK', { res });
       callback();
       loadTasks();
     }
