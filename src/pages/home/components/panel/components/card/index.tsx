@@ -38,7 +38,7 @@ const Card: React.FC<Props> = ({ data, column, showDetail }) => {
         <SubTitle>Atribuido a:</SubTitle>
         <Avatar />
         <TitleCard>
-          {team.filter((usr) => usr.cpf === data.employee_cpf)[0].name}
+          {team.filter((usr) => usr?.cpf === data.employee_cpf)[0]?.name}
         </TitleCard>
       </InfoView>
       <InfoView>
