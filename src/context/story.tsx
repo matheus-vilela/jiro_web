@@ -2,7 +2,9 @@ import React, {
   createContext, useCallback, useState, useContext, Dispatch, SetStateAction,
 } from 'react';
 import { ContextProps } from '.';
-import { createStory, CreateStoryProps, getStories } from '../services/api/story';
+import {
+  createStory, CreateStoryProps, getStories, updateStory, UpdateStoryProps,
+} from '../services/api/story';
 
 export type StoryState = {
 
@@ -13,6 +15,9 @@ export type StoryContextData ={
   postStory({
     sprint_id, title, status, bussinessRules, acceptanceCriteria, bdd,
   }: CreateStoryProps, callback:any): void;
+  putStory({
+    id, sprint_id, title, status, bussinessRules, acceptanceCriteria, bdd,
+  }: UpdateStoryProps, callback:any): void;
   // postStory({
   //   name,
   //   description,
@@ -57,10 +62,27 @@ export const StoryProvider: React.FC<ContextProps> = ({ children }) => {
       callback();
     }
   }
+  async function putStory({
+    sprint_id, title, status, bussinessRules, acceptanceCriteria, bdd, id,
+  }: UpdateStoryProps, callback:any) {
+    const res = await updateStory({
+      id,
+      sprint_id,
+      title,
+      status,
+      bussinessRules,
+      acceptanceCriteria,
+      bdd,
+    });
+    if (res) {
+      loadStories();
+      callback();
+    }
+  }
 
   return (
     <StoryContext.Provider value={{
-      loadStories, stories, postStory,
+      loadStories, stories, postStory, putStory,
     }}
     >
       {children}

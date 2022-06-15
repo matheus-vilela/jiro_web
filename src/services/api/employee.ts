@@ -9,7 +9,7 @@ export interface CreateEmployeeProps {
     role: string;
 }
 
-export interface UpdateSprintProps {
+export interface UpdateEmployedProps {
     currentCpf: string;
     cpf?: string;
     name?: string;
@@ -51,7 +51,7 @@ export async function updateEmployee({
   password,
   dtNasc,
   role,
-}:UpdateSprintProps) {
+}:UpdateEmployedProps) {
   const response = await api.post('/employee', {
     currentCpf,
     cpf,

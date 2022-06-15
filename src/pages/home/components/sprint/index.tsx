@@ -1,8 +1,10 @@
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import {
   FiFastForward, FiChevronRight,
 } from 'react-icons/fi';
+import Button from '../../../../components/button';
+import { useAuth } from '../../../../context/auth';
 import { SprintProps, useSprint } from '../../../../context/sprint';
 import { useStory } from '../../../../context/story';
 import Input from './components/input';
@@ -55,8 +57,9 @@ const mockHistoria = [
   },
 ];
 const Sprint: React.FC = () => {
-  const { sprints } = useSprint();
+  const { sprints, putSprint } = useSprint();
   const { stories } = useStory();
+  const { user } = useAuth();
   const [select, setSelect] = useState<SprintProps>({} as SprintProps);
   const [dateInitial, setDateInitial] = useState('');
   const [dateFinal, setDateFinal] = useState('');
@@ -65,8 +68,23 @@ const Sprint: React.FC = () => {
   useEffect(() => {
     if (select.id) {
       //
+      setDescription(select.description);
+      setDateInitial(format(new Date(select.startdate), 'yyyy-MM-dd'));
+      setDateFinal(format(new Date(select.enddate), 'yyyy-MM-dd'));
     }
   }, [select]);
+
+  function handleUpdateSprint() {
+    putSprint({
+      id: select.id,
+      description,
+      endDate: new Date(dateFinal),
+      startDate: new Date(dateInitial),
+      name: select.name,
+    }, () => {
+      alert('SPRINT ATUALIZADA COM SUCESSO');
+    });
+  }
 
   return (
     <Container>
@@ -114,27 +132,36 @@ const Sprint: React.FC = () => {
         </SubTitle>
         <Description
           placeholder="Digite a data de iniciio"
-          value={select.description}
-          contentEditable={false}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          contentEditable={user.admin}
         />
         <ContentRow>
+          {/* {alert(dateInitial)} */}
           <Input
             placeholder="Digite a data de iniciio"
-            value={format(new Date(select.startdate), 'dd/MM/yyyy')}
-            // onChange={setDateInitial}
-            onChange={() => {}}
-            contentEditable={false}
+            value={dateInitial}
+            onChange={setDateInitial}
+            contentEditable={user.admin}
+            type="date"
 
           />
           <div style={{ width: 40 }} />
           <Input
             placeholder="Digite a data de término"
-            value={format(new Date(select.enddate), 'dd/MM/yyyy')}
-            onChange={() => {}}
-            contentEditable={false}
+            value={dateFinal}
+            onChange={setDateFinal}
+            contentEditable={user.admin}
+            type="date"
+
           />
         </ContentRow>
-
+        {user.admin && (
+        <Button
+          title="ATUALIZAR SPRINT"
+          action={() => handleUpdateSprint()}
+        />
+        )}
         <Title>
           Histórias
         </Title>

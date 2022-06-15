@@ -9,7 +9,7 @@ export interface CreateStoryProps {
     bdd: string;
 }
 
-interface UpdateStoryProps {
+export interface UpdateStoryProps {
     id: number;
     sprint_id?: number;
     title?: string;
@@ -55,7 +55,7 @@ export async function updateStory({
   bussinessRules,
   acceptanceCriteria,
 }:UpdateStoryProps) {
-  const response = await api.post('/story', {
+  const response = await api.put('/story', {
     id,
     sprint_id,
     title,
@@ -64,7 +64,7 @@ export async function updateStory({
     bussinessRules,
     acceptanceCriteria,
   });
-  if (response.status === 200) { return response.data; }
+  if (response.status === 200 || response.status === 201) { return response.data; }
   return null;
 }
 

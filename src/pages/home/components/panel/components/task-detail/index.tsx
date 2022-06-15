@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components';
 import { PropsCard } from '../..';
 import Button from '../../../../../../components/button';
 import { useAuth } from '../../../../../../context/auth';
-import { TaskProps } from '../../../../../../context/task';
+import { TaskProps, useTask } from '../../../../../../context/task';
 import CreateTask from '../../../create-task';
 import Input from '../../../create-task/components/input';
 
@@ -12,7 +12,7 @@ import {
   Avatar,
   Container,
   Content, ContentColumn, ContentRow, Option, OptionButton, OptionButtonText,
-  OptionText, SubTitle, TextArea, Title,
+  OptionText, Select, SelectItem, SubTitle, TextArea, Title,
 } from './styles';
 
 interface Props {
@@ -21,7 +21,11 @@ interface Props {
 }
 const TaskDetail: React.FC<Props> = ({ data, showDetail }) => {
   const theme = useTheme();
-  const { team } = useAuth();
+  const { team, user } = useAuth();
+  const { deletedTask, putTask } = useTask();
+  const [description, setDescription] = useState(data.description);
+  const [employee, setEmployee] = useState(team.filter((i) => i.cpf === data.employee_cpf)[0]);
+  const [priority, setPriority] = useState(data.priority);
   return (
     <Container>
       <Content>
@@ -36,52 +40,87 @@ const TaskDetail: React.FC<Props> = ({ data, showDetail }) => {
         />
 
         <SubTitle>Descrição</SubTitle>
-        <TextArea />
+        <TextArea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          contentEditable={user.admin}
+        />
         <SubTitle>Atribuido a:</SubTitle>
-        <Option
-          onClick={() => {
-
+        <Select
+          value={employee ? `${employee.name} - ${employee.role}` : 'Selecione uma opcao'}
+          onChange={(e) => {
+            const usr = team.filter((i) => i.role === e.target.value.split('-')[1].trim() && i.name === e.target.value.split('-')[0].trim())[0];
+            setEmployee(usr);
           }}
-          active
         >
-          <ContentRow>
-            <Avatar />
-            <ContentColumn>
-              <OptionText>
-                {team.filter((usr) => usr.cpf === data.employee_cpf)[0].name}
-              </OptionText>
-              <OptionText style={{ fontSize: '0.8rem' }}>
-                Developer
-              </OptionText>
-            </ContentColumn>
-          </ContentRow>
-          <FiChevronRight size={24} />
-        </Option>
+          {
+            team.map((item) => (
+              <SelectItem key={item.cpf}>
+                {item.name}
+                {' '}
+                -
+                {' '}
+                {item.role}
+              </SelectItem>
+            ))
+          }
+        </Select>
         <SubTitle>Prioridade</SubTitle>
         <ContentRow>
           <OptionButton
             type="baixa"
-            active={data.priority === 0}
+            active={priority === 0}
+            onClick={() => setPriority(0)}
           >
-            <OptionButtonText active={data.priority === 0}>BAIXA</OptionButtonText>
+            <OptionButtonText active={priority === 0}>BAIXA</OptionButtonText>
           </OptionButton>
           <OptionButton
             type="média"
-            active={data.priority === 1}
+            active={priority === 1}
+            onClick={() => setPriority(1)}
+
           >
-            <OptionButtonText active={data.priority === 1}>MÉDIA</OptionButtonText>
+            <OptionButtonText active={priority === 1}>MÉDIA</OptionButtonText>
           </OptionButton>
           <OptionButton
             type="alta"
-            active={data.priority === 2}
+            active={priority === 2}
+            onClick={() => setPriority(2)}
+
           >
-            <OptionButtonText active={data.priority === 2}>ALTA</OptionButtonText>
+            <OptionButtonText active={priority === 2}>ALTA</OptionButtonText>
           </OptionButton>
         </ContentRow>
-        <Button
-          title="DELETAR TASK"
-          action={() => {}}
-        />
+        {user.admin && (
+          <>
+            <Button
+              title="ATUALIZAR TASK"
+              action={() => {
+                putTask({
+                  title: data.title,
+                  status: data.status,
+                  scope: data.scope,
+                  priority,
+                  description,
+                  employee_cpf: employee.cpf,
+                  story_id: data.story_id,
+                  id: data.id,
+                }, () => {
+                  alert('Task atualizada com sucesso!');
+                });
+              }}
+            />
+            <Button
+              title="DELETAR TASK"
+              action={() => {
+                deletedTask({ id: data.id }, () => {
+                  alert('Task deletada com sucesso!');
+                  showDetail(undefined);
+                });
+              }}
+            />
+          </>
+        )}
       </Content>
     </Container>
 

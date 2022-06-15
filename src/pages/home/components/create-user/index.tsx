@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import Button from '../../../../components/button';
-import { useAuth } from '../../../../context/auth';
+import { AuthState, useAuth } from '../../../../context/auth';
 import Input from './components/input';
 import {
   Avatar,
@@ -10,7 +10,11 @@ import {
   OptionText, SubTitle, TextArea, Title,
 } from './styles';
 
-const CreateUser: React.FC = () => {
+interface Props {
+  data: AuthState;
+}
+
+const CreateUser: React.FC<Props> = ({ data }) => {
   const { createUser } = useAuth();
   const [description, setDescription] = useState('');
   const [admin, setAdmin] = useState(false);
@@ -43,9 +47,6 @@ const CreateUser: React.FC = () => {
       <Content>
         <Title>ADICIONAR NOVO USUÁRIO</Title>
         <ContentRow>
-          <ContentColumn style={{ width: 200 }}>
-            <Avatar />
-          </ContentColumn>
           <ContentColumn>
             <SubTitle>Nome</SubTitle>
             <Input

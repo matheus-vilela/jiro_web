@@ -13,9 +13,10 @@ import {
 interface Props {
   select: string;
   setSelect: React.Dispatch<React.SetStateAction<string>>;
+  dataUser: any;
 }
 
-const Menu: React.FC<Props> = ({ select, setSelect }) => {
+const Menu: React.FC<Props> = ({ select, setSelect, dataUser }) => {
   const { team } = useAuth();
   const theme = useTheme();
   return (
@@ -54,9 +55,8 @@ const Menu: React.FC<Props> = ({ select, setSelect }) => {
       <SubTitle>O TIME</SubTitle>
       {
       team.map((item) => (
-        <Option key={item.cpf}>
+        <Option key={item.cpf} onClick={() => dataUser(item)}>
           <ContentRow>
-            <Avatar />
             <ContentColumn>
               <OptionText>
                 {item.name}

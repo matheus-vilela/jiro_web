@@ -36,7 +36,7 @@ const Input: React.FC<Props> = ({
         type={type}
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        onChange={(e) => [console.log(e.target.value), onChange(e.currentTarget.value)]}
         error={error}
         contentEditable
       />

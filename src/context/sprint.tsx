@@ -2,7 +2,9 @@ import React, {
   createContext, useCallback, useState, useContext, Dispatch, SetStateAction,
 } from 'react';
 import { ContextProps } from '.';
-import { createSprint, CreateSprintProps, getSprints } from '../services/api/sprint';
+import {
+  createSprint, CreateSprintProps, getSprints, updateSprint, UpdateSprintProps,
+} from '../services/api/sprint';
 
 export type SprintState = {
 
@@ -16,6 +18,14 @@ export type SprintContextData ={
     startDate,
     endDate,
   }:CreateSprintProps, callback:any): void;
+  putSprint({
+    name,
+    description,
+    startDate,
+    endDate,
+    id,
+  }:UpdateSprintProps, callback:any): void;
+
   sprints: SprintProps[]
 }
 
@@ -57,10 +67,28 @@ export const SprintProvider: React.FC<ContextProps> = ({ children }) => {
       callback();
     }
   }
-
+  async function putSprint({
+    name,
+    description,
+    startDate,
+    endDate,
+    id,
+  }:UpdateSprintProps, callback:any) {
+    const res = await updateSprint({
+      id,
+      name,
+      description,
+      startDate,
+      endDate,
+    });
+    if (res) {
+      loadSprints();
+      callback();
+    }
+  }
   return (
     <SprintContext.Provider value={{
-      loadSprints, sprints, postSprint,
+      loadSprints, sprints, postSprint, putSprint,
     }}
     >
       {children}

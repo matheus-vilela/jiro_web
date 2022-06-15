@@ -7,12 +7,12 @@ export interface CreateSprintProps {
     endDate: Date;
 }
 
-interface UpdateSprintProps {
+export interface UpdateSprintProps {
     id: number;
     name?: string;
     description?: string;
-    startDate?: string;
-    endDate?: string;
+    startDate?: Date;
+    endDate?: Date;
 }
 
 export async function getSprints() {
@@ -45,14 +45,14 @@ export async function updateSprint({
   startDate,
   endDate,
 }:UpdateSprintProps) {
-  const response = await api.post('/sprint', {
+  const response = await api.put('/sprint', {
     id,
     name,
     description,
     startDate,
     endDate,
   });
-  if (response.status === 200) { return response.data; }
+  if (response.status === 200 || response.status === 201) { return response.data; }
   return null;
 }
 

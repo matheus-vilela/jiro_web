@@ -142,3 +142,26 @@ export const Avatar = styled.img`
   border: 2px solid ${(props) => props.theme.colors.background};
   object-fit: cover;
 `;
+export const Select = styled.select`
+font-size: 1.1rem;
+line-height: 1.1rem;
+color:${(props) => props.theme.colors.black};
+width: 100%;
+border: none;
+padding: 5px 20px;
+border-radius: 7px;
+background-color:${(props) => props.theme.colors.primary};
+box-shadow: 0 3px 6px ${(props) => props.theme.colors.shadow};
+font-weight: 400;
+margin-top: 2px;
+cursor: pointer;
+display: flex;
+align-items: center;
+flex-direction: column;
+`;
+export const SelectItem = styled.option`
+text-align: justify;
+display: flex;
+flex-direction: column;
+
+`;

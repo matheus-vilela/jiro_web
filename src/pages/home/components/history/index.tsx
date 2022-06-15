@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import {
   FiFastForward, FiChevronRight,
 } from 'react-icons/fi';
+import Button from '../../../../components/button';
+import { useAuth } from '../../../../context/auth';
 import { SprintProps, useSprint } from '../../../../context/sprint';
 import { StoryProps, useStory } from '../../../../context/story';
 import { useTask } from '../../../../context/task';
@@ -12,54 +14,11 @@ import {
   ContentRow, Description, Option, OptionText, Select, SelectItem, SubTitle, Title,
 } from './styles';
 
-const mockTask = [
-  {
-    id: 'TSK-0001',
-    title: 'Desenvolver projeto no figma kanban',
-  },
-  {
-    id: 'TSK-0002',
-    title: 'Desenvolver projeto no figma kanban1',
-  },
-  {
-    id: 'TSK-0003',
-    title: 'Desenvolver projeto no figma kanban2',
-  },
-  {
-    id: 'TSK-0004',
-    title: 'Desenvolver projeto no figma kanban3',
-  },
-  {
-    id: 'TSK-0005',
-    title: 'Desenvolver projeto no figma kanban4',
-  },
-];
-const mockHistoria = [
-  {
-    id: 'HIS-0001',
-    title: 'Desenvolver projeto no figma kanban',
-  },
-  {
-    id: 'HIS-0002',
-    title: 'Desenvolver projeto no figma kanban1',
-  },
-  {
-    id: 'HIS-0003',
-    title: 'Desenvolver projeto no figma kanban2',
-  },
-  {
-    id: 'HIS-0004',
-    title: 'Desenvolver projeto no figma kanban3',
-  },
-  {
-    id: 'HIS-0005',
-    title: 'Desenvolver projeto no figma kanban4',
-  },
-];
 const History: React.FC = () => {
   const { sprints } = useSprint();
   const { allTasks } = useTask();
-  const { stories } = useStory();
+  const { stories, putStory } = useStory();
+  const { user } = useAuth();
   const [selectHistory, setSelectHistory] = useState<StoryProps>({} as StoryProps);
   const [select, setSelect] = useState<SprintProps>(sprints[0] || '');
   const [status, setStatus] = useState('BACKLOG');
@@ -80,6 +39,20 @@ const History: React.FC = () => {
       //
     }
   }, [selectHistory]);
+
+  function handleUpdateStory() {
+    putStory({
+      id: selectHistory.id,
+      status,
+      bussinessRules: Array.isArray(description) ? description : [description],
+      title: name,
+      bdd,
+      acceptanceCriteria: rules,
+      sprint_id: select.id,
+    }, () => {
+      alert('HISTORIA ATUALIZADA COM SUCESSO!');
+    });
+  }
 
   return (
     <Container>
@@ -124,10 +97,12 @@ const History: React.FC = () => {
         <Select
           value={select?.id ? `SPR-000${select.id} - ${select.name}` : 'Selecione uma opcao'}
           onChange={(e) => {
-            // const spr = sprints.filter(
-            //   (i) => Number(i.id) === Number(e.target.value.split('-')[1]),
-            // );
-            // setSelect(spr[0]);
+            if (user.admin) {
+              const spr = sprints.filter(
+                (i) => Number(i.id) === Number(e.target.value.split('-')[1]),
+              );
+              setSelect(spr[0]);
+            }
           }}
         >
           {
@@ -147,7 +122,7 @@ const History: React.FC = () => {
         <Select
           value={status || 'Selecione uma opcao'}
           onChange={(e) => {
-            // setStatus(e.target.value.trim());
+            if (user.admin)setStatus(e.target.value.trim());
           }}
         >
           <SelectItem> BACKLOG </SelectItem>
@@ -162,7 +137,7 @@ const History: React.FC = () => {
         <Description
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          contentEditable={false}
+          contentEditable={user.admin}
         />
         <SubTitle>
           BDD
@@ -170,7 +145,7 @@ const History: React.FC = () => {
         <Description
           value={bdd}
           onChange={(e) => setbdd(e.target.value)}
-          contentEditable={false}
+          contentEditable={user.admin}
 
         />
         <SubTitle>
@@ -179,9 +154,15 @@ const History: React.FC = () => {
         <Description
           value={rules}
           onChange={(e) => setRules(e.target.value)}
-          contentEditable={false}
+          contentEditable={user.admin}
 
         />
+        {user.admin && (
+        <Button
+          title="ATUALIZAR A HISTÓRIA"
+          action={() => { handleUpdateStory(); }}
+        />
+        )}
 
         <Title>
           TASKS

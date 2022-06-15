@@ -36,8 +36,7 @@ const Card: React.FC<Props> = ({ data, column, showDetail }) => {
       <Diviser />
       <InfoView>
         <SubTitle>Atribuido a:</SubTitle>
-        <Avatar />
-        <TitleCard>
+        <TitleCard style={{ marginLeft: 10 }}>
           {team.length && team.filter((usr) => usr?.cpf === data.employee_cpf)[0]?.name}
         </TitleCard>
       </InfoView>

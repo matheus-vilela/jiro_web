@@ -68,7 +68,7 @@ const CreateHistory: React.FC = () => {
         </Select>
         <SubTitle>Título</SubTitle>
         <Input
-          placeholder="Digite o título da Sprint"
+          placeholder="Digite o título da História"
           value={name}
           onChange={setName}
         />

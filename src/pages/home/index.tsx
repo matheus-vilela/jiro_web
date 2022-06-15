@@ -13,9 +13,11 @@ import CreateSprint from './components/create-sprint';
 import CreateHistory from './components/create-history';
 import CreateTask from './components/create-task';
 import CreateUser from './components/create-user';
+import { AuthState } from '../../context/auth';
 
 const Home: React.FC = () => {
   const [select, setSelect] = useState('panel');
+  const [selectDataUser, setSelectDataUser] = useState<AuthState>({} as AuthState);
 
   return (
     <Container>
@@ -23,14 +25,14 @@ const Home: React.FC = () => {
       <Image2 src={image2} alt="detalhe2" />
       <Header />
       <Content>
-        <Menu select={select} setSelect={setSelect} />
+        <Menu select={select} setSelect={setSelect} dataUser={setSelectDataUser} />
         {select === 'panel' && <Panel />}
         {select === 'sprint' && <Sprint />}
         {select === 'history' && <History />}
         {select === 'create-sprint' && <CreateSprint />}
         {select === 'create-history' && <CreateHistory />}
         {select === 'create-task' && <CreateTask />}
-        {select === 'create-user' && <CreateUser />}
+        {select === 'create-user' && <CreateUser data={selectDataUser} />}
       </Content>
     </Container>
   );

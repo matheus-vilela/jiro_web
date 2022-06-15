@@ -4,7 +4,7 @@ import React, {
 import { ContextProps } from '.';
 import { signIn } from '../services/api';
 import {
-  createTask, CreateTaskProps, getTasks, updateTask, UpdateTaskProps,
+  createTask, CreateTaskProps, deleteTask, getTasks, updateTask, UpdateTaskProps,
 } from '../services/api/task';
 
 export type TaskState = {
@@ -37,6 +37,9 @@ export type TaskContextData ={
     employee_cpf,
     story_id,
   }:CreateTaskProps, callback:any): void;
+  deletedTask({
+    id,
+  }:{ id:number}, callback:any): void;
   putTask({
     title,
     status,
@@ -167,9 +170,20 @@ export const TaskProvider: React.FC<ContextProps> = ({ children }) => {
     }
   }
 
+  async function deletedTask({
+    id,
+  }:{ id:number}, callback:any) {
+    const res = await deleteTask(
+      id,
+    );
+    if (res) {
+      callback();
+      loadTasks();
+    }
+  }
   return (
     <TaskContext.Provider value={{
-      loadTasks, tasks, setTasks, postTask, putTask, allTasks,
+      loadTasks, tasks, setTasks, postTask, putTask, allTasks, deletedTask,
     }}
     >
       {children}
