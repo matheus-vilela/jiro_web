@@ -49,38 +49,38 @@ const CreateUser: React.FC = () => {
           <ContentColumn>
             <SubTitle>Nome</SubTitle>
             <Input
-              placeholder="Digite a data de vencimento"
+              placeholder="Digite o nome"
               value={name}
               onChange={setName}
               type="small"
             />
             <SubTitle>CPF</SubTitle>
             <Input
-              placeholder="Digite a data de vencimento"
+              placeholder="Digite o cpf"
               value={cpf}
               onChange={setCpf}
               type="small"
             />
             <SubTitle>Cargo</SubTitle>
             <Input
-              placeholder="Digite a data de vencimento"
+              placeholder="Digite o cargo"
               value={cargo}
               onChange={setCargo}
               type="small"
             />
             <SubTitle>DATA DE NASCIMENTO</SubTitle>
             <Input
-              placeholder="Digite a data de vencimento"
+              placeholder="Digite a data de nascimento"
               value={birthDate}
               onChange={setBirthDate}
               type="date"
             />
             <SubTitle>SENHA</SubTitle>
             <Input
-              placeholder="Digite a data de vencimento"
+              placeholder="Digite a senha"
               value={password}
               onChange={setPassword}
-              type="small"
+              type="password"
             />
             <SubTitle>Administrador</SubTitle>
             <ContentRow>
