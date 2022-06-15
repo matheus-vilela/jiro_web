@@ -40,5 +40,6 @@ module.exports = {
     'react/jsx-no-constructed-context-values': 'off',
     'no-unused-vars': 'off',
     'no-shadow': 'off',
+    'no-console': 'off',
   },
 };

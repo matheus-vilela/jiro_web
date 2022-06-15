@@ -55,7 +55,7 @@ export const SprintProvider: React.FC<ContextProps> = ({ children }) => {
     });
     if (res) {
       console.log('SPRINT CREATE', { res });
-      setSprints((prevState) => [...prevState, res]);
+      loadSprints();
       callback();
     }
   }
